@@ -66,14 +66,14 @@ t_scene	*read_scene(t_arguments	*args)
 	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
 
 
-	tmp.type = CONE;
-	tmp.position.x = 200;
-	tmp.position.y = 0;
-	tmp.position.z = 100;
+	tmp.type = CYLINDER;
+	tmp.position.x = -100;
+	tmp.position.y = 50;
+	tmp.position.z = -100;
 	tmp.color.red = 255;
 	tmp.color.green = 100;
 	tmp.direction = (t_vector){0, 1, 0};
-	tmp.size = 50;
+	tmp.size = 100;
 	tmp.angle = 20;
 	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
 
@@ -81,7 +81,7 @@ t_scene	*read_scene(t_arguments	*args)
 	tmp.position.x = 270;
 	tmp.position.y = 100;
 	tmp.position.z = 100;
-	tmp.size = 50;
+	tmp.size = 100;
 	tmp.color.red = 200;
 	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
 
@@ -118,14 +118,18 @@ t_scene	*read_scene(t_arguments	*args)
 	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));*/
 
 
-	tmp = (t_object){INDIRECT_LIGHT, {-300, 300, 200}, {0, 0,0},
+	tmp = (t_object){DIRECT_LIGHT, {-300, 300, 200}, {0, 0, 0},
 					 {100, 0, 100, 0xFF}, 0.5};
-
 
 	ft_lstadd(&(res->lights), ft_lstnew_node(&tmp, sizeof(t_object)));
 	tmp.position.x = 0;
 	tmp.position.z = -300;
 	ft_lstadd(&(res->lights), ft_lstnew_node(&tmp, sizeof(t_object)));
+	tmp.position.x = -100;
+	tmp.position.z = -300;
+	tmp.direction.y = 1;
+	ft_lstadd(&(res->lights), ft_lstnew_node(&tmp, sizeof(t_object)));
+
 
 	return (res);
 }

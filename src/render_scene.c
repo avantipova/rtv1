@@ -2,25 +2,32 @@
 #include "rtv_structs.h"
 #include "vector.h"
 
-t_vector	get_norm(t_vector pos, t_object *obj)
+t_vector	get_norm(t_vector pos, t_object *obj, t_intersec inter)
 {
+	double m;
+
+	// RTAM DOLZHNY BYT KORNI URAVNENIA
+
+	m = ft_vecdot(inter.ray, obj->direction) * 1.4 + ft_vecdot(ft_vecsub(inter.start, obj->position), obj->direction);
 	if (obj->type == SPHERE)
 		return (ft_vecsub(pos, obj->position));
 	else if (obj->type == PLANE)
 		return (obj->direction);
 	else if (obj->type == INV_SPHERE)
 		return (ft_vecsub(obj->position, pos));
-	/*else if (obj->type == CYLINDER)
-		return ();
-	else if (obj->type == CONE)
+	else if (obj->type == CYLINDER)
+		return (ft_vecsub(ft_vecsub(pos, obj->position), ft_vecscale(obj->direction, m)));
+	/*else if (obj->type == CONE)
 		return ();*/
 }
 
 double		get_light_k(t_intersec inter, t_object *light)
 {
 	t_vector n1, n2, n3;
+	double m;
+
 	n1 = ft_vecsum(ft_vecscale(inter.ray, inter.rlen), inter.start);
-	n2 = get_norm(n1, inter.obj);
+	n2 = get_norm(n1, inter.obj, inter);
 	n3 = ft_vecsub(light->position, n1);
 
 	double tmp = ft_vecdot(n2, n3) / ft_veclen(n2) / ft_veclen(n3);
