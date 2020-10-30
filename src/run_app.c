@@ -1,7 +1,7 @@
 
 #include "app_funcs.h"
 
-void	run_app(t_rtv *rtv)
+void	run_app(t_rtv *rtv, t_ray *ray)
 {
 	int				status;
 	SDL_Event		e;
@@ -9,7 +9,7 @@ void	run_app(t_rtv *rtv)
 	status = 1;
 	SDL_SetRenderDrawColor(rtv->rend, 0, 0, 0, 0xFF);
 	SDL_RenderClear(rtv->rend);
-	render_scene(rtv->rend, rtv->scene);
+	render_scene(rtv, ray);
 	SDL_RenderPresent(rtv->rend);
 	while (status)
 	{

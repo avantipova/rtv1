@@ -6,6 +6,7 @@
 # include "SDL.h"
 # include "../libft/include/libft.h"
 # include "vector.h"
+# define EPS 0.000001
 
 typedef enum		e_obj_types
 {
@@ -36,32 +37,37 @@ typedef struct 		s_color
 typedef struct		s_object
 {
 	t_obj_types		type;
-	t_vector		position;
-	t_vector		direction;
+	t_vector		pos;
+	t_vector		dir;
+	t_vector		rot;
 	t_color			color;
 	double 			size;
 	double			angle;
+	double			r;
+	double			t;
+	double 			specular;
 }					t_object;
 
-typedef struct 		s_intersec
+typedef	struct		s_ray
 {
-	t_object		*obj;
-	t_vector		ray;
-	double 			rlen;
-	t_vector		start;
-}					t_intersec;
+	t_vector		orig;
+	t_vector		dir;
+}					t_ray;
 
 typedef struct		s_camera
 {
-	t_vector		origin;
-	t_vector		direction;
-	t_vector		center;
-	t_vector		up;
-	t_vector		right;
-	t_vector		forward;
-	int 			height;
-	int				width;
+	t_vector		pos;
+	t_vector		rot;
 }					t_camera;
+
+typedef	struct		s_light
+{
+	t_vector		pos;
+	t_vector		p;
+	t_vector		n;
+	double			inten;
+	double			new_inten;
+}					t_light;
 
 typedef struct		s_scene
 {
@@ -74,10 +80,15 @@ typedef struct		s_rtv
 {
 	SDL_Window		*window;
 	SDL_Renderer	*rend;
-	t_scene			*scene;
 	const char		*wname;
+	t_scene			*scene;
 	int				height;
 	int 			width;
+	int				clos_obj;
+	int				cam_is;
+	double			min_t;
+	double			ambient;
+	t_light			*light;
 }					t_rtv;
 
 #endif

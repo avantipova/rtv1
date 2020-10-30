@@ -2,7 +2,6 @@
 #include "app_funcs.h"
 //#include "ft_string.h"
 
-
 t_rtv		*init_rtv(t_arguments *args, t_scene *scene)
 {
 	t_rtv	*res;
@@ -10,15 +9,16 @@ t_rtv		*init_rtv(t_arguments *args, t_scene *scene)
 	if (!(res = ft_memalloc(sizeof(t_rtv))))
 		return (NULL);
 	res->scene = scene;
-	res->width = args->w_width;
-	res->height = args->w_height;
+	res->width = 800;
+	res->height = 800;
+	res->ambient = 15.0 / 100.0;
 
 	SDL_Init(0);
 	res->window = SDL_CreateWindow(args->fname,
 			SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED,
-			args->w_width,
-			args->w_height,
+			800,
+			800,
 			0);
 	res->rend = SDL_CreateRenderer(res->window, -1, 0);
 	return (res);

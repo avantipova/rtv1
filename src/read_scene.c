@@ -11,124 +11,111 @@ t_scene	*read_scene(t_arguments	*args)
 	if (!(res = ft_memalloc(sizeof(t_scene))))
 		return (NULL);
 
-	res->cam.origin = (t_vector){0, 0, -500};
-	res->cam.direction = (t_vector){0, 0, 200};
-	res->cam.right = (t_vector){1, 0, 0};
-	res->cam.up = (t_vector){0, 1, 0};
-	res->cam.width = args->w_width;
-	res->cam.height = args->w_height;
+	res->cam.pos.x = 0;
+	res->cam.pos.y = 1;
+	res->cam.pos.z = -100;
+	res->cam.rot.x = 0;
+	res->cam.rot.y = 0;
+	res->cam.rot.z = 0;
 
 	t_object	tmp;
+	t_light		light;
 
 	tmp.type = PLANE;
-	tmp.position.x = -500;
-	tmp.position.y = 0;
-	tmp.position.z = 200;
-	tmp.color.red = 50;
-	tmp.color.green = 100;
-	tmp.direction = (t_vector){1, 0, 0};
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
-
-	tmp.type = PLANE;
-	tmp.position.x = 500;
-	tmp.position.y = 0;
-	tmp.position.z = 200;
-	tmp.color.red = 100;
-	tmp.color.green = 100;
-	tmp.direction = (t_vector){-1, 0, 0};
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
-
-	tmp.type = PLANE;
-	tmp.position.x = 0;
-	tmp.position.y = 500;
-	tmp.position.z = 200;
-	tmp.color.red = 150;
-	tmp.color.green = 100;
-	tmp.direction = (t_vector){0, -1, 0};
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
-
-	tmp.type = PLANE;
-	tmp.position.x = 0;
-	tmp.position.y = -500;
-	tmp.position.z = 200;
-	tmp.color.red = 200;
-	tmp.color.green = 100;
-	tmp.direction = (t_vector){0, 1, 0};
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
-
-	tmp.type = PLANE;
-	tmp.position.x = 0;
-	tmp.position.y = 0;
-	tmp.position.z = 200;
-	tmp.color.red = 255;
-	tmp.color.green = 100;
-	tmp.direction = (t_vector){0, 0, -1};
+	tmp.pos.x = 0;
+	tmp.pos.y = -2;
+	tmp.pos.z = 25;
+	tmp.rot.x = 0;
+	tmp.rot.y = 1;
+	tmp.rot.z = 0;
+	tmp.color.red = 59;
+	tmp.color.green = 60;
+	tmp.color.blue = 195;
+	tmp.specular = 200;
 	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
 
 
 	tmp.type = CYLINDER;
-	tmp.position.x = -100;
-	tmp.position.y = 50;
-	tmp.position.z = -100;
+	tmp.pos.x = -2;
+	tmp.pos.y = 0;
+	tmp.pos.z = 30;
+	tmp.r = (double)4 / 10;
+	tmp.rot.x = 0;
+	tmp.rot.y = 1;
+	tmp.rot.z = 0;
 	tmp.color.red = 255;
-	tmp.color.green = 100;
-	tmp.direction = (t_vector){0, 1, 0};
-	tmp.size = 100;
-	tmp.angle = 20;
+	tmp.color.green = 0;
+	tmp.color.blue = 0;
+	tmp.specular = 200;
+	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
+
+	tmp.type = CONE;
+	tmp.pos.x = 3;
+	tmp.pos.y = 0;
+	tmp.pos.z = 60;
+	tmp.r = (double)3 / 10;
+	tmp.rot.x = 1;
+	tmp.rot.y = 1;
+	tmp.rot.z = 1;
+	tmp.color.red = 255;
+	tmp.color.green = 255;
+	tmp.color.blue = 0;
+	tmp.specular = 0.002;
+	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
+
+tmp.type = CYLINDER;
+	tmp.pos.x = 2;
+	tmp.pos.y = 0;
+	tmp.pos.z = 30;
+	tmp.r = (double)4 / 10;
+	tmp.rot.x = 0;
+	tmp.rot.y = 1;
+	tmp.rot.z = 0;
+	tmp.color.red = 0;
+	tmp.color.green = 0;
+	tmp.color.blue = 255;
+	tmp.specular = 50;
+	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
+
+
+	tmp.type = SPHERE;
+	tmp.pos.x = -2;
+	tmp.pos.y = -2;
+	tmp.pos.z = 30;
+	tmp.r = (double)60 / 10;
+	tmp.color.red = 200;
+	tmp.color.green = 111;
+	tmp.color.blue = 137;
+	tmp.specular = 10;
 	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
 
 	tmp.type = SPHERE;
-	tmp.position.x = 270;
-	tmp.position.y = 100;
-	tmp.position.z = 100;
-	tmp.size = 100;
-	tmp.color.red = 200;
+	tmp.pos.x = 1;
+	tmp.pos.y = -2;
+	tmp.pos.z = 5;
+	tmp.r = (double)30 / 10;
+	tmp.color.red = 102;
+	tmp.color.green = 255;
+	tmp.color.blue = 137;
+	tmp.specular = 100;
 	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
 
-	
-	/*ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
 
+	light.pos.x = 3;
+	light.pos.y = 3;
+	light.pos.z = 20;
+	light.inten = 70.0 / 100.0;
+	light.new_inten = 1;
 
-	tmp.position.x = 150;
-	tmp.size = 100;
-	tmp.color.green = 128;
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
+	ft_lstadd(&(res->lights), ft_lstnew_node(&light, sizeof(t_light)));
 
-	tmp.position.x = -75;
-	tmp.position.y = 0;
-	tmp.position.z = -50;
-	tmp.size = 20;
-	tmp.color.green = 0;
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));*/
+	light.pos.x = -3;
+	light.pos.y = 1;
+	light.pos.z = 25;
+	light.inten = 40.0 / 100.0;
+	light.new_inten = 1;
 
-	//tmp.type = CYLINDER;
-	/*tmp.position.x = -75;
-	tmp.position.y = 0;
-	tmp.position.z = 200;
-	tmp.color.red = 255;
-	tmp.size = 200;*/
-
-
-	/*tmp.type = SPHERE;
-	tmp.position.x = 0;
-	tmp.position.y = 0;
-	tmp.position.z = 300;
-	tmp.size = 50;
-
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));*/
-
-
-	tmp = (t_object){DIRECT_LIGHT, {-300, 300, 200}, {0, 0, 0},
-					 {100, 0, 100, 0xFF}, 0.5};
-
-	ft_lstadd(&(res->lights), ft_lstnew_node(&tmp, sizeof(t_object)));
-	tmp.position.x = 0;
-	tmp.position.z = -300;
-	ft_lstadd(&(res->lights), ft_lstnew_node(&tmp, sizeof(t_object)));
-	tmp.position.x = -100;
-	tmp.position.z = -300;
-	tmp.direction.y = 1;
-	ft_lstadd(&(res->lights), ft_lstnew_node(&tmp, sizeof(t_object)));
+	ft_lstadd(&(res->lights), ft_lstnew_node(&light, sizeof(t_light)));
 
 
 	return (res);

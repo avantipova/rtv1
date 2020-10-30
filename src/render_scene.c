@@ -1,183 +1,103 @@
 
-#include "rtv_structs.h"
-#include "vector.h"
+# include "rtv_structs.h"
+# include "vector.h"
+# include "read_scene.h"
 
-t_vector	get_norm(t_vector pos, t_object *obj, t_intersec inter)
+void	set_color(t_rtv *rtv, int i, int x, int y)
 {
-	double m;
-
-	// RTAM DOLZHNY BYT KORNI URAVNENIA
-
-	m = ft_vecdot(inter.ray, obj->direction) * 1.4 + ft_vecdot(ft_vecsub(inter.start, obj->position), obj->direction);
-	if (obj->type == SPHERE)
-		return (ft_vecsub(pos, obj->position));
-	else if (obj->type == PLANE)
-		return (obj->direction);
-	else if (obj->type == INV_SPHERE)
-		return (ft_vecsub(obj->position, pos));
-	else if (obj->type == CYLINDER)
-		return (ft_vecsub(ft_vecsub(pos, obj->position), ft_vecscale(obj->direction, m)));
-	/*else if (obj->type == CONE)
-		return ();*/
-}
-
-double		get_light_k(t_intersec inter, t_object *light)
-{
-	t_vector n1, n2, n3;
-	double m;
-
-	n1 = ft_vecsum(ft_vecscale(inter.ray, inter.rlen), inter.start);
-	n2 = get_norm(n1, inter.obj, inter);
-	n3 = ft_vecsub(light->position, n1);
-
-	double tmp = ft_vecdot(n2, n3) / ft_veclen(n2) / ft_veclen(n3);
-	if (tmp < 0)
-		return (0);
-	else
-		return (tmp * light->size);
-}
-
-t_double2 		get_intersection(t_vector or, t_vector ray, t_object *obj)
-{
-	t_double2 tmp;
-	if (obj->type == SPHERE || obj->type == INV_SPHERE)
-	{
-		tmp = sphere_intersection(&or, &ray, &(obj->position), obj->size);
-		return (tmp);
-	}
-	else if (obj->type == PLANE)
-	{
-		tmp = plane_intersection(&or, &ray, &(obj->position), &(obj->direction));
-		return (tmp);
-	}
-	else if (obj->type == CYLINDER)
-	{
-		tmp = cylinder_intersection(&or, &ray, &(obj->position), &(obj->direction), obj->size);
-		return (tmp);
-	}
-	else if (obj->type == CONE)
-	{
-		tmp = cone_intersection(&or, &ray, &(obj->direction), &(obj->position), obj->angle, obj->size);
-		return (tmp);
-	}
-}
-
-double 		get_min_pos(t_double2 dbl)
-{
-	if (dbl.a > 0 && dbl.b > 0)
-		return (dbl.a > dbl.b ? dbl.b : dbl.a);
-	else if (dbl.a >= 0 && dbl.b < 0)
-		return (dbl.a);
-	else if (dbl.b >= 0)
-		return (dbl.b);
-	else
-		return (NAN);
-}
-
-char 		is_lighted(t_intersec inter, t_object *light, t_list *objects)
-{
+	double	p;
+	int		k;
 	t_list_node	*cur;
-	double cur_inter;
-	t_vector n1, n3;
+	t_light *svet;
+	t_object *tmp;
 
-	n1 = ft_vecsum(ft_vecscale(inter.ray, inter.rlen), inter.start);
-	n3 = ft_vecsub(n1, light->position );
-
-	cur = objects->begin;
+	tmp = ft_list_at(rtv->scene->objects.begin, i);
+	cur = rtv->scene->lights.begin;
+	k = 0;
+	p = 0;
 	while (cur)
 	{
-		cur_inter = get_min_pos(get_intersection(light->position, n3, cur->content));
-		if (!isnan(cur_inter) && cur_inter < 1 && cur->content != inter.obj)
-			return (0);
+		svet = cur->content;
+		if (svet->new_inten > 1)
+			svet->new_inten = 1;
+		p += svet->new_inten;
+		if (p > 1)
+			p = 1;
+		k++;
 		cur = cur->next;
 	}
-	return (1);
-}
-
-double		get_lights_k(t_intersec inter, t_list *lights, t_list *objects)
-{
-	t_list_node	*cur_l;
-	double res;
-
-	res = 0;
-	cur_l = lights->begin;
-	while (cur_l)
+	if (i > -1)
 	{
-		if (is_lighted(inter, cur_l->content, objects))
-			res += get_light_k(inter, cur_l->content);
-		cur_l = cur_l->next;
+		SDL_SetRenderDrawColor(rtv->rend, tmp->color.red * p, 
+			tmp->color.green * p, tmp->color.blue * p, 255);
+		SDL_RenderDrawPoint(rtv->rend, x, y);
 	}
-	return (res);
-}
-
-
-t_intersec	find_nearest_inter(t_scene *scene, t_vector ray)
-{
-	t_intersec	res;
-	double cur_inter;
-	t_list_node	*cur;
-
-	res.rlen = NAN;
-	cur = scene->objects.begin;
-	while (cur)
-	{
-		cur_inter = get_min_pos(get_intersection(scene->cam.origin, ray, cur->content));
-		if (isnan(res.rlen) || (cur_inter > 1.0 && cur_inter < res.rlen))
-		{
-			res.rlen = cur_inter;
-			res.obj = cur->content;
-			res.ray = ray;
-		}
-		cur = cur->next;
-	}
-	res.start = scene->cam.origin;
-	return (res);
-}
-
-t_color		get_pixel_color(t_scene *scene, t_vector ray, t_vector origin)
-{
-	double k;
-	t_color res = {0 , 0x0 , 0x0, 0xFF};
-
-	t_intersec	tmp;
-
-	tmp = find_nearest_inter(scene, ray);
-	if (isnan(tmp.rlen))
-		return (res);
 	else
 	{
-		k = get_lights_k(tmp, &(scene->lights), &(scene->objects));
-		res.red = tmp.obj->color.red * k;
-		res.green = tmp.obj->color.green * k;
-		res.blue = tmp.obj->color.blue * k;
-		return (res);
+		SDL_SetRenderDrawColor(rtv->rend, 0, 0, 0, 255);
+		SDL_RenderDrawPoint(rtv->rend, x, y);
 	}
 }
 
-void 		render_scene(SDL_Renderer *rend, t_scene *scene)
+void	intersection_check(t_ray *ray, t_rtv *rtv, int x, int y)
 {
-	t_vector	cur_vec;
-	t_vector	tmp;
-	int			cur_x;
-	int 		cur_y;
-	t_color		cl;
+	int	i;
+	t_list_node	*cur;
+	t_object *obj;
 
-	cur_y = 0;
-	cur_vec = ft_vecsum(scene->cam.direction, ft_vecscale(scene->cam.up, (int)(scene->cam.height / 2)));
-	cur_vec = ft_vecsub(cur_vec, ft_vecscale(scene->cam.right, (int)(scene->cam.width / 2)));
-	while (cur_y < scene->cam.height)
+	i = 0;
+	rtv->clos_obj = -1;
+	rtv->min_t = INFINITY;
+	cur = rtv->scene->objects.begin;
+	while (cur)
 	{
-		cur_x = 0;
-		tmp = cur_vec;
-		while (cur_x < scene->cam.width)
+		obj = cur->content;
+		if (obj->type == SPHERE)
+			sphere(rtv, ray, i, obj);
+		else if (obj->type == PLANE)
+			plane(rtv, ray, i, obj);
+		else if (obj->type == CYLINDER)
+			cylinder(rtv, ray, i, obj);
+		else if (obj->type == CONE)
+			cone(rtv, ray, i, obj);
+		cur = cur->next;
+		i++;
+	}
+	if (rtv->clos_obj > -1)
+		light(rtv, ray);
+	set_color(rtv, rtv->clos_obj, x, y);
+}
+
+void	get_dir(double x, double y, t_ray *ray, t_rtv *rtv)
+{
+	ray->dir.x = x * (40 / (double)800);
+	ray->dir.y = y * (40 / (double)800);
+	ray->dir.z = 1.0;
+	ray->dir = ft_vecrot(ray->dir, rtv->scene->cam.rot);
+}
+
+
+void 		render_scene(t_rtv *rtv, t_ray *ray)
+{
+	int		x;
+	int		y;
+	double	n_x;
+	double	n_y;
+
+	x = 0;
+	while (x <= rtv->width)
+	{
+		y = 0;
+		n_x = (x + 0.5) / (double)rtv->width;
+		n_x = 2 * n_x - 1;
+		while (y <= rtv->height)
 		{
-			cl = get_pixel_color(scene, cur_vec, scene->cam.origin);
-			SDL_SetRenderDrawColor(rend, cl.red, cl.green, cl.blue, cl.alpha);
-			SDL_RenderDrawPoint(rend, cur_x, cur_y);
-			cur_vec = ft_vecsum(cur_vec, scene->cam.right);
-			cur_x++;
+			n_y = (y + 0.5) / (double)rtv->height;
+			n_y = 1 - (2 * n_y);
+			get_dir(n_x, n_y, ray, rtv);
+			intersection_check(ray, rtv, x, y);
+			y++;
 		}
-		cur_y++;
-		cur_vec = ft_vecsub(tmp, scene->cam.up);
+		x++;
 	}
 }

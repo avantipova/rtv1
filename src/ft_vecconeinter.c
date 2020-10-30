@@ -1,61 +1,51 @@
 #include "vector.h"
 #include <math.h>
+#include "rtv_structs.h"
+# include "read_scene.h"
 
-t_double2		cone_intersection(t_vector *st, t_vector *dir, t_vector *dire, t_vector *cent, double angle, double r)
+double	cone_intersect(t_vector o, t_vector dir, t_object *obj)
 {
-	t_vector 	tmp;
-	double		tang;
-	double		x;
-	double		y;
-	double 		a;
-	double		b;
-	double		c;
-	t_double2	res;
+	double	a;
+	double	b;
+	double	c;
+	double	d;
+	t_vector	x;
 
-
-	tang = tan(angle * M_PI / 180);
-	tmp = ft_vecsub(*st, *cent);
-	x = ft_vecdot(*dir, *dire);
-	y = ft_vecdot(tmp, *dire);
-	a = ft_vecdot(*dir, *dir) - ((1 + pow(tang, 2)) * pow(x, 2));
-	b = 2 * (ft_vecdot(*dir, tmp) - ((1 + pow(tang, 2)) * x * y));
-	c = ft_vecdot(tmp, tmp) - (1 + pow(tang, 2) * pow(y, 2));
-	c = b * b -  4 * a * c;
-	res.a = NAN;
-	res.b = NAN;
-	if (c >= 0)
-	{
-		res.a = (-b + sqrtf(c)) / (2 * a);
-		res.b = (-b - sqrtf(c)) / (2 * a);
-	}
-	return (res);
+	x = ft_vecsub(o, obj->pos);
+	a = ft_vecdot(dir, obj->rot);
+	a = ft_vecdot(dir, dir) - (1 + obj->r * obj->r) * a * a;
+	b = 2 * (ft_vecdot(dir, x) - (1 + obj->r * obj->r) *
+		ft_vecdot(dir, obj->rot) * ft_vecdot(x, obj->rot));
+	c = ft_vecdot(x, x) - (1 + obj->r * obj->r) * pow(ft_vecdot(x, obj->rot), 2);
+	d = b * b - 4 * a * c;
+	if (d < EPS)
+		return (-1);
+	return (get_root(a, b, d));
 }
 
-/*t_double2		cone_intersection(t_vector *st, t_vector *dir, t_vector *dire, t_vector *cent, double angle, double r)/*
+t_vector	cone_normal(t_ray *ray, t_object *obj)
 {
-	t_vector 	tmp;
-	double		tang;
-	double		x;
-	double		y;
-	double 		a;
-	double		b;
-	double		c;
-	double d;
-	t_double2	res;
+	double	m;
+	t_vector	n;
+	t_vector	p;
 
-	tmp = ft_vecsub(*st, *cent);
-	a = ft_vecdot(*dir, *dire);
-	a = ft_vecdot(*dir, *dir) - (1 + r * r) * a * a;
-	b = 2.0 * (ft_vecdot(*dir, tmp) - (1 + r * r) * ft_vecdot(*dir, *dire) * ft_vecdot(tmp, *dire));
-	c = ft_vecdot(tmp, *dire);
-	c = ft_vecdot(tmp, tmp) - (1 + r * r) * c * c;
-	d = b * b -  4 * a * c;
-	res.a = NAN;
-	res.b = NAN;
-	if (c >= 0)
+	m = obj->t * ft_vecdot(ray->dir, obj->rot) +
+	ft_vecdot(ft_vecsub(ray->orig, obj->pos), obj->rot);
+	p = ft_vecsum(ray->orig, ft_vecscale(ray->dir, obj->t));
+	n = ft_vecscale(ft_vecscale(obj->rot, m), (1 + obj->r * obj->r));
+	n = ft_vecnorm(ft_vecsub(ft_vecsub(p, obj->pos), n));
+	if (ft_vecdot(ray->dir, n) > EPS)
+		n = ft_vecscale(n, -1);
+	return (n);
+}
+
+void	cone(t_rtv *rtv, t_ray *ray, int i, t_object *obj)
+{
+	obj->t = cone_intersect(ray->orig, ray->dir, obj);
+	obj->rot = ft_vecnorm(obj->rot);
+	if (obj->t > 0 && obj->t < rtv->min_t)
 	{
-		res.a = (-b + sqrtf(d)) / (2 * a);
-		res.b = (-b - sqrtf(d)) / (2 * a);
+		rtv->min_t = obj->t;
+		rtv->clos_obj = i;
 	}
-	return (res);
-}*/
+}
