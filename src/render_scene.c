@@ -70,12 +70,11 @@ void	intersection_check(t_ray *ray, t_rtv *rtv, int x, int y)
 
 void	get_dir(double x, double y, t_ray *ray, t_rtv *rtv)
 {
-	ray->dir.x = x * (40 / (double)800);
-	ray->dir.y = y * (40 / (double)800);
+	ray->dir.x = x * (VECTOR_W / (double)rtv->width);
+	ray->dir.y = y * (VECTOR_H / (double)rtv->height);
 	ray->dir.z = 1.0;
 	ray->dir = ft_vecrot(ray->dir, rtv->scene->cam.rot);
 }
-
 
 void 		render_scene(t_rtv *rtv, t_ray *ray)
 {

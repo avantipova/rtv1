@@ -1,6 +1,31 @@
 #include "vector.h"
 #include <math.h>
 #include "rtv_structs.h"
+#include "read_scene.h"
+
+void	parse_sphere(t_scene *scene, char **str)
+{
+	int i;
+	t_object tmp;
+
+	i = -1;
+	tmp.type = SPHERE;
+	tmp.pos.x = (double)(ft_atoi(str[1]));
+	tmp.pos.y = (double)(ft_atoi(str[2]));
+	tmp.pos.z = (double)(ft_atoi(str[3]));
+	tmp.r = (double)(ft_atoi(str[4])) / 10;
+	if (tmp.r < 0.1 || ft_atoi(str[5]) < 0 || ft_atoi(str[6]) < 0
+		|| ft_atoi(str[7]) < 0)
+		put_error("Wrong input for sphere");
+	tmp.color.red = (unsigned char)(ft_atoi(str[5]));
+	tmp.color.green = (unsigned char)(ft_atoi(str[6]));
+	tmp.color.blue= (unsigned char)(ft_atoi(str[7]));
+	tmp.specular = (double)(ft_atoi(str[8]));
+	while (++i <= 8)
+		free(str[i]);
+	free(str);
+	ft_lstadd(&(scene->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
+}
 
 t_vector	sphere_normal(t_ray *ray, t_object *obj)
 {

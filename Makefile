@@ -6,7 +6,7 @@
 #    By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/28 18:22:57 by ldeirdre          #+#    #+#              #
-#    Updated: 2020/10/27 14:45:37 by ldeirdre         ###   ########.fr        #
+#    Updated: 2020/10/31 18:52:21 by ldeirdre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ OTHER = ./lib_sdl/
 INCL = ./include/
 
 SRC = main.c ft_vecdot.c ft_veclen.c ft_vecnorm.c ft_vecplaneinter.c ft_vecscale.c ft_vecsphereinter.c ft_vecsum.c \
-		init_rtv.c read_args.c read_scene.c render_scene.c run_app.c ft_vecconeinter.c ft_veccylinter.c ft_vecrot.c light.c
+		init_rtv.c read_scene.c render_scene.c run_app.c ft_vecconeinter.c ft_veccylinter.c ft_vecrot.c light.c
 
 SRCSDIR = ./src/
 

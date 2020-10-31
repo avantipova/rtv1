@@ -2,7 +2,7 @@
 #include "app_funcs.h"
 //#include "ft_string.h"
 
-t_rtv		*init_rtv(t_arguments *args, t_scene *scene)
+t_rtv		*init_rtv(t_scene *scene)
 {
 	t_rtv	*res;
 
@@ -11,14 +11,13 @@ t_rtv		*init_rtv(t_arguments *args, t_scene *scene)
 	res->scene = scene;
 	res->width = 800;
 	res->height = 800;
-	res->ambient = 15.0 / 100.0;
 
 	SDL_Init(0);
-	res->window = SDL_CreateWindow(args->fname,
+	res->window = SDL_CreateWindow(scene->fname,
 			SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED,
-			800,
-			800,
+			res->width,
+			res->height,
 			0);
 	res->rend = SDL_CreateRenderer(res->window, -1, 0);
 	return (res);

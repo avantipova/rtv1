@@ -2,6 +2,24 @@
 # include "vector.h"
 # include "read_scene.h"
 
+void	parse_light(t_scene *scene, char **str)
+{
+	int i;
+	t_light light;
+
+	i = -1;
+	light.pos.x = (double)(ft_atoi(str[1]));
+	light.pos.y = (double)(ft_atoi(str[2]));
+	light.pos.z = (double)(ft_atoi(str[3]));
+	light.inten = (double)(ft_atoi(str[4])) / 100;
+	if (light.inten < 0)
+		put_error("Wrong intensity parameter");
+	light.new_inten = 1;
+	while (++i <= 4)
+		free(str[i]);
+	free(str);
+	ft_lstadd(&(scene->lights), ft_lstnew_node(&light, sizeof(t_light)));
+}
 
 t_object	*ft_list_at(t_list_node *begin_list, unsigned int nbr)
 {
@@ -76,7 +94,7 @@ void	get_intensity(t_rtv *rtv, t_light *light, t_vector v, double s)
 	t_vector	l;
 	t_vector	r;
 
-	light->new_inten = rtv->ambient;
+	light->new_inten = rtv->scene->ambient;
 	inten = 0.0;
 	l = ft_vecnorm(ft_vecsub(light->pos, light->p));
 	n_dot_l = ft_vecdot(light->n, l);

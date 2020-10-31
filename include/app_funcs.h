@@ -4,7 +4,7 @@
 
 #include "rtv_structs.h"
 
-t_rtv	*init_rtv(t_arguments *argc, t_scene *scene);
+t_rtv	*init_rtv(t_scene *scene);
 void	run_app(t_rtv *rtv, t_ray *ray);
 void	deinit_rtv(t_rtv *rtv);
 void 	render_scene(t_rtv *rtv, t_ray *ray);

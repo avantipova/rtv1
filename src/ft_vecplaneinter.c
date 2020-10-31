@@ -5,6 +5,34 @@
 #include "rtv_structs.h"
 #include "read_scene.h"
 
+void	parse_plane(t_scene *scene, char **str)
+{
+	int i;
+	t_object tmp;
+
+	i = -1;
+	tmp.type = PLANE;
+	tmp.pos.x = (double)(ft_atoi(str[1]));
+	tmp.pos.y = (double)(ft_atoi(str[2]));
+	tmp.pos.z = (double)(ft_atoi(str[3]));
+	tmp.rot.x = (double)(ft_atoi(str[4]));
+	tmp.rot.y = (double)(ft_atoi(str[5]));
+	tmp.rot.z = (double)(ft_atoi(str[6]));
+	if (ft_atoi(str[7]) < 0 || ft_atoi(str[8]) < 0 || ft_atoi(str[9]) < 0)
+		put_error("Wrong input");
+	tmp.color.red = (unsigned char)(ft_atoi(str[7]));
+	tmp.color.green = (unsigned char)(ft_atoi(str[8]));
+	tmp.color.blue = (unsigned char)(ft_atoi(str[9]));
+	tmp.specular = (double)(ft_atoi(str[10]));
+	while (++i <= 10)
+		free(str[i]);
+	free(str);
+	ft_lstadd(&(scene->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
+}
+
+
+
+
 t_vector	plane_normal(t_ray *ray, t_object *obj)
 {
 	if (ft_vecdot(ray->dir, obj->rot) < 0)

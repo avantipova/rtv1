@@ -4,7 +4,7 @@
 
 # include "rtv_structs.h"
 
-t_scene	*read_scene(t_arguments	*args);
+t_scene	*read_scene(char *argv);
 void	free_scene(t_scene *scene);
 t_vector	cone_normal(t_ray *ray, t_object *obj);
 void	cone(t_rtv *sdl, t_ray *ray, int i, t_object *obj);
@@ -24,5 +24,12 @@ double	cone_intersect(t_vector o, t_vector dir, t_object *obj);
 void	light(t_rtv *rtv, t_ray *ray);
 t_object	*ft_list_at(t_list_node *begin_list, unsigned int nbr);
 t_light	*ft_list_atlight(t_list_node *begin_list, unsigned int nbr);
-
+void	put_error(char *str);
+void	parse_camera(t_scene *scene, char **str);
+t_scene	 *parse_args(char **str, t_scene *scene);
+void	parse_cone(t_scene *scene, char **str);
+void	parse_cylinder(t_scene *scene, char **str);
+void	parse_plane(t_scene *scene, char **str);
+void	parse_sphere(t_scene *scene, char **str);
+void	parse_light(t_scene *scene, char **str);
 #endif

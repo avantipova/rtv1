@@ -7,6 +7,8 @@
 # include "../libft/include/libft.h"
 # include "vector.h"
 # define EPS 0.000001
+# define VECTOR_W 40
+# define VECTOR_H 40
 
 typedef enum		e_obj_types
 {
@@ -18,13 +20,6 @@ typedef enum		e_obj_types
 	DIRECT_LIGHT,
 	INDIRECT_LIGHT
 }					t_obj_types;
-
-typedef struct		s_arguments
-{
-	const char		*fname;
-	int 			w_height;
-	int 			w_width;
-}					t_arguments;
 
 typedef struct 		s_color
 {
@@ -74,6 +69,8 @@ typedef struct		s_scene
 	t_list			objects;
 	t_list			lights;
 	t_camera		cam;
+	const char 		*fname;
+	double			ambient;
 }					t_scene;
 
 typedef struct		s_rtv
@@ -87,7 +84,6 @@ typedef struct		s_rtv
 	int				clos_obj;
 	int				cam_is;
 	double			min_t;
-	double			ambient;
 	t_light			*light;
 }					t_rtv;
 

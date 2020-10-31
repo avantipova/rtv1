@@ -3,6 +3,33 @@
 #include "rtv_structs.h"
 # include "read_scene.h"
 
+void	parse_cone(t_scene *scene, char **str)
+{
+	int i;
+	t_object tmp;
+
+	i = -1;
+	tmp.type = CONE;
+	tmp.pos.x = (double)(ft_atoi(str[1]));
+	tmp.pos.y = (double)(ft_atoi(str[2]));
+	tmp.pos.z = (double)(ft_atoi(str[3]));
+	tmp.r = (double)(ft_atoi(str[4])) / 10;
+	tmp.rot.x = (double)(ft_atoi(str[5])) / 10;
+	tmp.rot.y = (double)(ft_atoi(str[6])) / 10;
+	tmp.rot.z = (double)(ft_atoi(str[7])) / 10;
+	if (tmp.r < 0.1 || ft_atoi(str[8]) < 0 || ft_atoi(str[9]) < 0
+		|| ft_atoi(str[10]) < 0)
+		put_error("Wrong input for cone");
+	tmp.color.red = (unsigned char)(ft_atoi(str[8]));
+	tmp.color.green = (unsigned char)(ft_atoi(str[9]));
+	tmp.color.blue = (unsigned char)(ft_atoi(str[10]));
+	tmp.specular = (double)(ft_atoi(str[11]));
+	while (++i <= 11)
+		free(str[i]);
+	free(str);
+	ft_lstadd(&(scene->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
+}
+
 double	cone_intersect(t_vector o, t_vector dir, t_object *obj)
 {
 	double	a;

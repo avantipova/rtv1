@@ -2,122 +2,87 @@
 #include "read_scene.h"
 
 #include "../libft/include/ft_list.h"
+#include <fcntl.h>	
+#include <sys/stat.h>	
+#include <sys/types.h>
 
 
-t_scene	*read_scene(t_arguments	*args)
+void	put_error(char *str)
+{
+	ft_putendl(str);
+	exit(1);
+}
+
+void	parse_camera(t_scene *scene, char **str)
+{
+	int i;
+
+	i = -1;
+	scene->cam.pos.x = (double)(atoi(str[1]));
+	scene->cam.pos.y = (double)(atoi(str[2]));
+	scene->cam.pos.z = (double)(atoi(str[3]));
+	scene->cam.rot.x = (double)(atoi(str[4]));
+	scene->cam.rot.y = (double)(atoi(str[5]));
+	scene->cam.rot.z = (double)(atoi(str[6]));
+	while (++i <= 6)
+		free(str[i]);
+	free(str);
+}
+
+
+
+t_scene	 *parse_args(char **str, t_scene *scene)
+{
+	int i;
+
+	i = -1;
+	if (ft_strequ(str[0], "camera:"))
+		parse_camera(scene, str);
+	else if (ft_strequ(str[0], "light:"))
+		parse_light(scene, str);
+	else if (ft_strequ(str[0], "sphere:"))
+		parse_sphere(scene, str);
+	else if (ft_strequ(str[0], "plane:"))
+		parse_plane(scene, str);
+	else if (ft_strequ(str[0], "cylinder:"))
+		parse_cylinder(scene, str);
+	else if (ft_strequ(str[0], "cone:"))
+		parse_cone(scene, str);
+	else if (ft_strequ(str[0], "ambient:"))
+	{
+		scene->ambient = (double)(atoi(str[1])) / 100;
+		if (scene->ambient < 0)
+			put_error("Wrong intensity parameter");
+		while (++i <= 1)
+			free(str[i]);
+		free(str);
+	}
+	return (scene);
+}
+
+t_scene	*read_scene(char *argv)
 {
 	t_scene	*res;
+	char	*line;
+	int		fd;
+	int		i;
+	char	**split;
 
+	i = 0;
+	fd = 0;
+	line = NULL;
 	if (!(res = ft_memalloc(sizeof(t_scene))))
 		return (NULL);
-
-	res->cam.pos.x = 0;
-	res->cam.pos.y = 1;
-	res->cam.pos.z = -100;
-	res->cam.rot.x = 0;
-	res->cam.rot.y = 0;
-	res->cam.rot.z = 0;
-
-	t_object	tmp;
-	t_light		light;
-
-	tmp.type = PLANE;
-	tmp.pos.x = 0;
-	tmp.pos.y = -2;
-	tmp.pos.z = 25;
-	tmp.rot.x = 0;
-	tmp.rot.y = 1;
-	tmp.rot.z = 0;
-	tmp.color.red = 59;
-	tmp.color.green = 60;
-	tmp.color.blue = 195;
-	tmp.specular = 200;
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
-
-
-	tmp.type = CYLINDER;
-	tmp.pos.x = -2;
-	tmp.pos.y = 0;
-	tmp.pos.z = 30;
-	tmp.r = (double)4 / 10;
-	tmp.rot.x = 0;
-	tmp.rot.y = 1;
-	tmp.rot.z = 0;
-	tmp.color.red = 255;
-	tmp.color.green = 0;
-	tmp.color.blue = 0;
-	tmp.specular = 200;
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
-
-	tmp.type = CONE;
-	tmp.pos.x = 3;
-	tmp.pos.y = 0;
-	tmp.pos.z = 60;
-	tmp.r = (double)3 / 10;
-	tmp.rot.x = 1;
-	tmp.rot.y = 1;
-	tmp.rot.z = 1;
-	tmp.color.red = 255;
-	tmp.color.green = 255;
-	tmp.color.blue = 0;
-	tmp.specular = 0.002;
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
-
-tmp.type = CYLINDER;
-	tmp.pos.x = 2;
-	tmp.pos.y = 0;
-	tmp.pos.z = 30;
-	tmp.r = (double)4 / 10;
-	tmp.rot.x = 0;
-	tmp.rot.y = 1;
-	tmp.rot.z = 0;
-	tmp.color.red = 0;
-	tmp.color.green = 0;
-	tmp.color.blue = 255;
-	tmp.specular = 50;
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
-
-
-	tmp.type = SPHERE;
-	tmp.pos.x = -2;
-	tmp.pos.y = -2;
-	tmp.pos.z = 30;
-	tmp.r = (double)60 / 10;
-	tmp.color.red = 200;
-	tmp.color.green = 111;
-	tmp.color.blue = 137;
-	tmp.specular = 10;
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
-
-	tmp.type = SPHERE;
-	tmp.pos.x = 1;
-	tmp.pos.y = -2;
-	tmp.pos.z = 5;
-	tmp.r = (double)30 / 10;
-	tmp.color.red = 102;
-	tmp.color.green = 255;
-	tmp.color.blue = 137;
-	tmp.specular = 100;
-	ft_lstadd(&(res->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
-
-
-	light.pos.x = 3;
-	light.pos.y = 3;
-	light.pos.z = 20;
-	light.inten = 70.0 / 100.0;
-	light.new_inten = 1;
-
-	ft_lstadd(&(res->lights), ft_lstnew_node(&light, sizeof(t_light)));
-
-	light.pos.x = -3;
-	light.pos.y = 1;
-	light.pos.z = 25;
-	light.inten = 40.0 / 100.0;
-	light.new_inten = 1;
-
-	ft_lstadd(&(res->lights), ft_lstnew_node(&light, sizeof(t_light)));
-
-
+	if ((fd = open(argv, O_RDONLY)) < 0)
+		put_error("Can't open the file");
+	res->fname = argv;
+	while ((i = ft_get_next_line(fd, &line)) > 0)
+	{
+		split = ft_strsplit(line, " ");
+		res = parse_args(split, res);
+		ft_strdel(&line);
+	}
+	ft_strdel(&line);
 	return (res);
 }
 
