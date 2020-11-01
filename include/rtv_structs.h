@@ -71,6 +71,7 @@ typedef struct		s_scene
 	t_camera		cam;
 	const char 		*fname;
 	double			ambient;
+	int				cams;
 }					t_scene;
 
 typedef struct		s_rtv
@@ -82,7 +83,6 @@ typedef struct		s_rtv
 	int				height;
 	int 			width;
 	int				clos_obj;
-	int				cam_is;
 	double			min_t;
 	t_light			*light;
 }					t_rtv;

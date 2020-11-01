@@ -1,10 +1,10 @@
 
-#include "read_scene.h"
 
 #include "../libft/include/ft_list.h"
 #include <fcntl.h>	
 #include <sys/stat.h>	
 #include <sys/types.h>
+#include "read_scene.h"
 
 
 void	put_error(char *str)
@@ -13,7 +13,7 @@ void	put_error(char *str)
 	exit(1);
 }
 
-void	parse_camera(t_scene *scene, char **str)
+void parse_camera(t_scene *scene, char **str)
 {
 	int i;
 
@@ -24,12 +24,11 @@ void	parse_camera(t_scene *scene, char **str)
 	scene->cam.rot.x = (double)(atoi(str[4]));
 	scene->cam.rot.y = (double)(atoi(str[5]));
 	scene->cam.rot.z = (double)(atoi(str[6]));
+	scene->cams = 1;
 	while (++i <= 6)
 		free(str[i]);
 	free(str);
 }
-
-
 
 t_scene	 *parse_args(char **str, t_scene *scene)
 {
@@ -52,12 +51,52 @@ t_scene	 *parse_args(char **str, t_scene *scene)
 	{
 		scene->ambient = (double)(atoi(str[1])) / 100;
 		if (scene->ambient < 0)
-			put_error("Wrong intensity parameter");
+			put_error("Wrong intensity aka ambient");
 		while (++i <= 1)
 			free(str[i]);
 		free(str);
 	}
 	return (scene);
+}
+
+int		line_valid(char *line)
+{
+	if (ft_strncmp("camera: ", line, 5) == 0)
+		return (1);
+	if (ft_strncmp("light: ", line, 7) == 0)
+		return (1);
+	if (ft_strncmp("sphere: ", line, 8) == 0)
+		return (1);
+	if (ft_strncmp("cone: ", line, 6) == 0)
+		return (1);
+	if (ft_strncmp("cylinder: ", line, 10) == 0)
+		return (1);
+	if (ft_strncmp("plane: ", line, 7) == 0)
+		return (1);
+	if (ft_strncmp("ambient: ", line, 9) == 0)
+		return (1);
+	return (0);
+}
+
+void	valid(char **str)
+{
+	int i;
+
+	i = 0;
+	if (ft_strequ(str[0], "camera:"))
+		val_1(str, 6);
+	else if (ft_strequ(str[0], "sphere:"))
+		val_1(str, 8);
+	else if (ft_strequ(str[0], "plane:"))
+		val_1(str, 10);
+	else if (ft_strequ(str[0], "cylinder:"))
+		val_1(str, 11);
+	else if (ft_strequ(str[0], "cone:"))
+		val_1(str, 11);
+	else if (ft_strequ(str[0], "light:"))
+		val_1(str, 4);
+	else if (ft_strequ(str[0], "ambient:"))
+		val_1(str, 1);
 }
 
 t_scene	*read_scene(char *argv)
@@ -78,11 +117,17 @@ t_scene	*read_scene(char *argv)
 	res->fname = argv;
 	while ((i = ft_get_next_line(fd, &line)) > 0)
 	{
+		if (line_valid(line) == 0)
+			put_error("Wrong input");
 		split = ft_strsplit(line, " ");
 		res = parse_args(split, res);
 		ft_strdel(&line);
+		valid(split);
 	}
 	ft_strdel(&line);
+	if (res->cams != 1)
+		put_error("Have no camera");
+	close(fd);
 	return (res);
 }
 
