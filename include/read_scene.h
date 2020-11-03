@@ -33,4 +33,8 @@ void	parse_plane(t_scene *scene, char **str);
 void	parse_sphere(t_scene *scene, char **str);
 void	parse_light(t_scene *scene, char **str);
 int		line_valid(char *line);
+int		val_nb(char *str);
+void	val_1(char **str, int k);
+void	valid(char **str);
+void	valid_file(int fd, char *argv, int i);
 #endif
