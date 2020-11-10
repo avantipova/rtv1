@@ -1,7 +1,7 @@
 
 # include "rtv_structs.h"
 # include "vector.h"
-# include "read_scene.h"
+# include "scene.h"
 
 void	set_color(t_rtv *rtv, int i, int x, int y)
 {

@@ -86,5 +86,4 @@ typedef struct		s_rtv
 	double			min_t;
 	t_light			*light;
 }					t_rtv;
-
 #endif

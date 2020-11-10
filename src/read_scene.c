@@ -1,8 +1,5 @@
-#include "../libft/include/ft_list.h"
-#include <fcntl.h>	
-#include <sys/stat.h>	
-#include <sys/types.h>
-#include "read_scene.h"
+
+#include "scene.h"
 
 
 void	put_error(char *str)

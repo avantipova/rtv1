@@ -1,6 +1,4 @@
 #include "vector.h"
-# include <fcntl.h>
-# include <math.h>
 
 # define DTR(a)	((double)a * (M_PI / 180))
 

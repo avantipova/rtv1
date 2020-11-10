@@ -1,5 +1,4 @@
 #include "vector.h"
-#include <math.h>
 
 inline double	ft_veclen(t_vector v)
 {

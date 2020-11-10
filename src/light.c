@@ -1,6 +1,6 @@
 # include "rtv_structs.h"
 # include "vector.h"
-# include "read_scene.h"
+# include "scene.h"
 
 void	parse_light(t_scene *scene, char **str)
 {

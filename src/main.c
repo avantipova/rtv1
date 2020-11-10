@@ -1,7 +1,26 @@
 
 #include "rtv_structs.h"
-#include "read_scene.h"
-#include "app_funcs.h"
+#include "scene.h"
+
+void	run_app(t_rtv *rtv, t_ray *ray)
+{
+	int				status;
+	SDL_Event		e;
+
+	status = 1;
+	SDL_SetRenderDrawColor(rtv->rend, 0, 0, 0, 0xFF);
+	SDL_RenderClear(rtv->rend);
+	render_scene(rtv, ray);
+	SDL_RenderPresent(rtv->rend);
+	while (status)
+	{
+		while (SDL_PollEvent(&e))
+		{
+			if (e.type == SDL_QUIT)
+				status = 0;
+		}
+	}
+}
 
 int	main(int argc, char **argv)
 {
@@ -10,7 +29,7 @@ int	main(int argc, char **argv)
 	t_ray		*ray;
 
 	if (!(ray = ft_memalloc(sizeof(t_ray))) || argc != 2)
-		return (NULL);
+		return (0);
 	if ((scene = read_scene(argv[1])))
 	{
 		if ((rtv = init_rtv(scene)))

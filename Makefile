@@ -6,7 +6,7 @@
 #    By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/28 18:22:57 by ldeirdre          #+#    #+#              #
-#    Updated: 2020/11/03 14:10:03 by ldeirdre         ###   ########.fr        #
+#    Updated: 2020/11/10 21:50:49 by ldeirdre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ OTHER = ./lib_sdl/
 INCL = ./include/
 
 SRC = main.c ft_vecdot.c ft_veclen.c ft_vecnorm.c ft_vecplaneinter.c ft_vecscale.c ft_vecsphereinter.c ft_vecsum.c \
-		init_rtv.c read_scene.c render_scene.c run_app.c ft_vecconeinter.c ft_veccylinter.c ft_vecrot.c light.c valid_file.c
+		init_rtv.c read_scene.c render_scene.c ft_vecconeinter.c ft_veccylinter.c ft_vecrot.c light.c valid_file.c
 
 SRCSDIR = ./src/
 
@@ -46,10 +46,10 @@ $(LNAM):
 
 $(NAME): $(OBJECTS_DIR) $(OBJ)
 			@make -C $(LIBFDIR)
-			@$(CC) -Wall -lft -lSDL2  -lm -L$(LIBFDIR) -L$(OTHER) $(OBJ) -framework OpenGL -I $(LIBFDIR) -I $(LSDLDIR) -I $(INCL) -o $(NAME)
+			@$(CC) $(CCFL) -lft -lSDL2  -lm -L$(LIBFDIR) -L$(OTHER) $(OBJ) -framework OpenGL -I $(LIBFDIR) -I $(LSDLDIR) -I $(INCL) -o $(NAME)
 
 $(OBJECTS_DIR)%.o: $(SRCSDIR)%.c $(INCL)/rtv_structs.h
-			$(CC) -Wall  -g -c $< -I $(LIBFDIR) -I $(INCL) -I $(LSDLDIR) -o $@
+			$(CC) $(CCFL) -g -c $< -I $(LIBFDIR) -I $(INCL) -I $(LSDLDIR) -o $@
 
 $(OBJECTS_DIR):
 			@mkdir $(OBJECTS_DIR)

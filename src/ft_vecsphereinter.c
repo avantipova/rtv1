@@ -1,7 +1,6 @@
 #include "vector.h"
-#include <math.h>
 #include "rtv_structs.h"
-#include "read_scene.h"
+#include "scene.h"
 
 void	parse_sphere(t_scene *scene, char **str)
 {

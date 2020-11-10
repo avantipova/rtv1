@@ -1,7 +1,6 @@
 #include "vector.h"
-#include <math.h>
 #include "rtv_structs.h"
-# include "read_scene.h"
+#include "scene.h"
 
 void	parse_cylinder(t_scene *scene, char **str)
 {
@@ -29,8 +28,6 @@ void	parse_cylinder(t_scene *scene, char **str)
 	free(str);
 	ft_lstadd(&(scene->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
 }
-
-
 
 double	cylinder_intersect(t_vector o, t_vector dir, t_object *obj)
 {

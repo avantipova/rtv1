@@ -1,6 +1,4 @@
-
-#include "app_funcs.h"
-//#include "ft_string.h"
+#include "scene.h"
 
 t_rtv		*init_rtv(t_scene *scene)
 {
