@@ -6,7 +6,7 @@
 #    By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/28 18:22:57 by ldeirdre          #+#    #+#              #
-#    Updated: 2020/11/10 21:50:49 by ldeirdre         ###   ########.fr        #
+#    Updated: 2020/11/11 22:14:55 by ldeirdre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ $(LNAM):
 
 $(NAME): $(OBJECTS_DIR) $(OBJ)
 			@make -C $(LIBFDIR)
-			@$(CC) $(CCFL) -lft -lSDL2  -lm -L$(LIBFDIR) -L$(OTHER) $(OBJ) -framework OpenGL -I $(LIBFDIR) -I $(LSDLDIR) -I $(INCL) -o $(NAME)
+			@$(CC) $(CCFL) -lft -lSDL2 -lm -L$(LIBFDIR) -L$(OTHER) $(OBJ) -framework OpenGL -I $(LIBFDIR) -I $(LSDLDIR) -I $(INCL) -o $(NAME)
 
 $(OBJECTS_DIR)%.o: $(SRCSDIR)%.c $(INCL)/rtv_structs.h
 			$(CC) $(CCFL) -g -c $< -I $(LIBFDIR) -I $(INCL) -I $(LSDLDIR) -o $@

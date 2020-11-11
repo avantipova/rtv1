@@ -1,7 +1,6 @@
 
 #include "scene.h"
 
-
 void	put_error(char *str)
 {
 	ft_putendl(str);

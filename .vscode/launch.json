@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/rtv1",
-            "args": ["scene.3"],
+            "args": ["pics/basic1"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
