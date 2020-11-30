@@ -13,12 +13,10 @@
 typedef enum		e_obj_types
 {
 	SPHERE,
-	INV_SPHERE,
 	PLANE,
 	CONE,
 	CYLINDER,
 	DIRECT_LIGHT,
-	INDIRECT_LIGHT
 }					t_obj_types;
 
 typedef struct 		s_color

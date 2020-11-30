@@ -10,7 +10,7 @@ t_vector	ft_vecrot(t_vector d, t_vector r)
 	return (d);
 }
 
-t_vector	ft_vecrotx(t_vector d, double a)
+t_vector	ft_vecroty(t_vector d, double a)
 {
 	t_vector r;
 
@@ -20,7 +20,7 @@ t_vector	ft_vecrotx(t_vector d, double a)
 	return (r);
 }
 
-t_vector	ft_vecroty(t_vector d, double a)
+t_vector	ft_vecrotx(t_vector d, double a)
 {
 	t_vector r;
 

@@ -5,28 +5,28 @@
 
 void	turn_left(t_rtv *rtv, t_ray *ray)
 {
-	rtv->scene->cam.rot.y -= 0.1;
+	rtv->scene->cam.rot.x -= 0.1;
 	render_scene(rtv, ray);
 	SDL_RenderPresent(rtv->rend);
 }
 
 void	turn_right(t_rtv *rtv, t_ray *ray)
 {
-	rtv->scene->cam.rot.y += 0.1;
+	rtv->scene->cam.rot.x += 0.1;
 	render_scene(rtv, ray);
 	SDL_RenderPresent(rtv->rend);
 }
 
 void	go_up(t_rtv *rtv, t_ray *ray)
 {
-	rtv->scene->cam.rot.x -= 0.1;
+	rtv->scene->cam.rot.y += 0.1;
 	render_scene(rtv, ray);
 	SDL_RenderPresent(rtv->rend);
 }
 
 void	go_down(t_rtv *rtv, t_ray *ray)
 {
-	rtv->scene->cam.rot.x += 0.1;
+	rtv->scene->cam.rot.y -= 0.1;
 	render_scene(rtv, ray);
 	SDL_RenderPresent(rtv->rend);
 }
