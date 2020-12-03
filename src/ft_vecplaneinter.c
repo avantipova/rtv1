@@ -1,12 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_vecplaneinter.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/03 20:21:06 by ldeirdre          #+#    #+#             */
+/*   Updated: 2020/12/03 21:00:25 by ldeirdre         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vector.h"
-#include "stdio.h"
 #include "rtv_structs.h"
 #include "scene.h"
 
-void	parse_plane(t_scene *scene, char **str)
+void			parse_plane(t_scene *scene, char **str)
 {
-	int i;
-	t_object tmp;
+	int			i;
+	t_object	tmp;
 
 	i = -1;
 	tmp.type = PLANE;
@@ -28,21 +39,18 @@ void	parse_plane(t_scene *scene, char **str)
 	ft_lstadd(&(scene->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
 }
 
-
-
-
-t_vector	plane_normal(t_ray *ray, t_object *obj)
+t_vector		plane_normal(t_ray *ray, t_object *obj)
 {
 	if (ft_vecdot(ray->dir, obj->rot) < 0)
 		return (obj->rot);
 	return (ft_vecscale(obj->rot, -1));
 }
 
-double	plane_intersect(t_vector o, t_vector dir, t_object *obj)
+double			plane_intersect(t_vector o, t_vector dir, t_object *obj)
 {
-	double	t;
-	double	a;
-	double	b;
+	double		t;
+	double		a;
+	double		b;
 	t_vector	x;
 
 	x = ft_vecsub(o, obj->pos);
@@ -56,7 +64,7 @@ double	plane_intersect(t_vector o, t_vector dir, t_object *obj)
 	return (-1);
 }
 
-void	plane(t_rtv *sdl, t_ray *ray, int i, t_object *obj)
+void			plane(t_rtv *sdl, t_ray *ray, int i, t_object *obj)
 {
 	obj->rot = ft_vecnorm(obj->rot);
 	obj->t = plane_intersect(ray->orig, ray->dir, obj);

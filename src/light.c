@@ -1,11 +1,23 @@
-# include "rtv_structs.h"
-# include "vector.h"
-# include "scene.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   light.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/03 20:21:53 by ldeirdre          #+#    #+#             */
+/*   Updated: 2020/12/03 21:07:01 by ldeirdre         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	parse_light(t_scene *scene, char **str)
+#include "rtv_structs.h"
+#include "vector.h"
+#include "scene.h"
+
+void			parse_light(t_scene *scene, char **str)
 {
-	int i;
-	t_light light;
+	int 		i;
+	t_light 	light;
 
 	i = -1;
 	light.pos.x = (double)(ft_atoi(str[1]));
@@ -21,51 +33,17 @@ void	parse_light(t_scene *scene, char **str)
 	ft_lstadd(&(scene->lights), ft_lstnew_node(&light, sizeof(t_light)));
 }
 
-t_object	*ft_list_at(t_list_node *begin_list, unsigned int nbr)
+int				shadow_init(t_light *light, t_rtv *rtv)
 {
-	unsigned int	i;
-
-	i = 0;
-	while (begin_list)
-	{
-		if (i == nbr)
-			return (begin_list->content);
-		begin_list = begin_list->next;
-		i++;
-	}
-	return (0);
-}
-
-
-t_light	*ft_list_atlight(t_list_node *begin_list, unsigned int nbr)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (begin_list)
-	{
-		if (i == nbr)
-			return (begin_list->content);
-		begin_list = begin_list->next;
-		i++;
-	}
-	return (0);
-}
-
-
-int		shadow_init(t_light *light, t_rtv *rtv)
-{
-	int		i;
-	double	max_t;
-	double	t;
+	double		max;
+	double		t;
 	t_vector	dir;
     t_list_node	*cur;
-	t_object *obj;
+	t_object 	*obj;
 
-	i = -1;
 	t = 0;
-    cur = rtv->scene->objects.begin;
-	max_t = ft_veclen(ft_vecsub(light->pos, light->p));
+	cur = rtv->scene->objects.begin;
+	max = ft_veclen(ft_vecsub(light->pos, light->p));
 	dir = ft_vecnorm(ft_vecsub(light->pos, light->p));
 	light->p = ft_vecsum(light->p, ft_vecscale(dir, EPS));
 	while (cur)
@@ -79,18 +57,18 @@ int		shadow_init(t_light *light, t_rtv *rtv)
 			t = cone_intersect(light->p, dir, obj);
 		else if (obj->type == CYLINDER)
 			t = cylinder_intersect(light->p, dir, obj);
-		if (t > 0.00001 && t < max_t)
+		if (t > 0.00001 && t < max)
 			return (1);
         cur = cur->next;
 	}
 	return (0);
 }
 
-void	get_intensity(t_rtv *rtv, t_light *light, t_vector v, double s)
+void			get_intensity(t_rtv *rtv, t_light *light, t_vector v, double s)
 {
-	double	n_dot_l;
-	double	r_dot_v;
-	double	inten;
+	double		n_dot_l;
+	double		r_dot_v;
+	double		inten;
 	t_vector	l;
 	t_vector	r;
 
@@ -115,12 +93,12 @@ void	get_intensity(t_rtv *rtv, t_light *light, t_vector v, double s)
 	}
 }
 
-void	light(t_rtv *rtv, t_ray *ray)
+void			light(t_rtv *rtv, t_ray *ray)
 {
-	int	i;
+	int			i;
 	t_list_node	*cur;
-	t_light *svet;
-	t_object *closest;
+	t_light 	*svet;
+	t_object 	*closest;
 
 	cur = rtv->scene->lights.begin;
 	i = 0;

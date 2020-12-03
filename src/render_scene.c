@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render_scene.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/03 20:22:02 by ldeirdre          #+#    #+#             */
+/*   Updated: 2020/12/03 20:53:33 by ldeirdre         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 # include "rtv_structs.h"
 # include "vector.h"
@@ -6,14 +17,12 @@
 void	set_color(t_rtv *rtv, int i, int x, int y)
 {
 	double	p;
-	int		k;
 	t_list_node	*cur;
 	t_light *svet;
 	t_object *tmp;
 
 	tmp = ft_list_at(rtv->scene->objects.begin, i);
 	cur = rtv->scene->lights.begin;
-	k = 0;
 	p = 0;
 	while (cur)
 	{
@@ -23,20 +32,13 @@ void	set_color(t_rtv *rtv, int i, int x, int y)
 		p += svet->new_inten;
 		if (p > 1)
 			p = 1;
-		k++;
 		cur = cur->next;
 	}
 	if (i > -1)
-	{
-		SDL_SetRenderDrawColor(rtv->rend, tmp->color.red * p, 
-			tmp->color.green * p, tmp->color.blue * p, 255);
-		SDL_RenderDrawPoint(rtv->rend, x, y);
-	}
+		SDL_SetRenderDrawColor(rtv->rend, tmp->color.red * p, tmp->color.green * p, tmp->color.blue * p, 255);
 	else
-	{
 		SDL_SetRenderDrawColor(rtv->rend, 0, 0, 0, 255);
-		SDL_RenderDrawPoint(rtv->rend, x, y);
-	}
+	SDL_RenderDrawPoint(rtv->rend, x, y);
 }
 
 void	intersection_check(t_ray *ray, t_rtv *rtv, int x, int y)

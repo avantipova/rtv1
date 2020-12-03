@@ -45,7 +45,7 @@ t_scene	 *parse_args(char **str, t_scene *scene)
 	{
 		scene->ambient = (double)(atoi(str[1])) / 100;
 		if (scene->ambient < 0)
-			put_error("Wrong intensity aka ambient");
+			put_error("Wrong intensity");
 		while (++i <= 1)
 			free(str[i]);
 		free(str);

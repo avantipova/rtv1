@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_veccylinter.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/03 20:20:50 by ldeirdre          #+#    #+#             */
+/*   Updated: 2020/12/03 20:57:09 by ldeirdre         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vector.h"
 #include "rtv_structs.h"
 #include "scene.h"
 
-void	parse_cylinder(t_scene *scene, char **str)
+void			parse_cylinder(t_scene *scene, char **str)
 {
-	int i;
-	t_object tmp;
+	int			i;
+	t_object	tmp;
 
 	i = -1;
 	tmp.type = CYLINDER;
@@ -29,17 +41,18 @@ void	parse_cylinder(t_scene *scene, char **str)
 	ft_lstadd(&(scene->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
 }
 
-double	cylinder_intersect(t_vector o, t_vector dir, t_object *obj)
+double			cylinder_intersect(t_vector o, t_vector dir, t_object *obj)
 {
-	double	a;
-	double	b;
-	double	c;
-	double	d;
+	double		a;
+	double		b;
+	double		c;
+	double		d;
 	t_vector	x;
 
 	x = ft_vecsub(o, obj->pos);
 	a = ft_vecdot(dir, dir) - pow(ft_vecdot(dir, obj->rot), 2);
-	b = 2 * (ft_vecdot(dir, x) - (ft_vecdot(dir, obj->rot) * ft_vecdot(x, obj->rot)));
+	b = 2 * (ft_vecdot(dir, x) - (ft_vecdot(dir, obj->rot) *
+		ft_vecdot(x, obj->rot)));
 	c = ft_vecdot(x, x) - pow(ft_vecdot(x, obj->rot), 2) - pow(obj->r, 2);
 	d = b * b - 4 * a * c;
 	if (d < 0)
@@ -47,9 +60,9 @@ double	cylinder_intersect(t_vector o, t_vector dir, t_object *obj)
 	return (get_root(a, b, d));
 }
 
-t_vector	cyl_normal(t_ray *ray, t_object *obj)
+t_vector		cyl_normal(t_ray *ray, t_object *obj)
 {
-	double	m;
+	double		m;
 	t_vector	n;
 	t_vector	p;
 
@@ -62,7 +75,7 @@ t_vector	cyl_normal(t_ray *ray, t_object *obj)
 	return (n);
 }
 
-void	cylinder(t_rtv *sdl, t_ray *ray, int i, t_object *obj)
+void			cylinder(t_rtv *sdl, t_ray *ray, int i, t_object *obj)
 {
 	obj->t = cylinder_intersect(ray->orig, ray->dir, obj);
 	obj->rot = ft_vecnorm(obj->rot);

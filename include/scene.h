@@ -49,4 +49,5 @@ void	intersection_check(t_ray *ray, t_rtv *rtv, int x, int y);
 void	light(t_rtv *rtv, t_ray *ray);
 void	set_color(t_rtv *rtv, int i, int x, int y);
 t_object	*ft_list_at(t_list_node *begin_list, unsigned int nbr);
+void	run_app(t_rtv *rtv, t_ray *ray);
 #endif

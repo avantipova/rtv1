@@ -32,6 +32,7 @@
         "cstring": "c",
         "cwchar": "c",
         "ostream": "c",
-        "streambuf": "c"
+        "streambuf": "c",
+        "__locale": "cpp"
     }
 }

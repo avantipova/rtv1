@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_vecconeinter.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/03 20:20:44 by ldeirdre          #+#    #+#             */
+/*   Updated: 2020/12/03 20:55:40 by ldeirdre         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vector.h"
 #include "rtv_structs.h"
-# include "scene.h"
+#include "scene.h"
 
-void	parse_cone(t_scene *scene, char **str)
+void			parse_cone(t_scene *scene, char **str)
 {
-	int i;
-	t_object tmp;
+	int			i;
+	t_object	tmp;
 
 	i = -1;
 	tmp.type = CONE;
@@ -29,12 +41,12 @@ void	parse_cone(t_scene *scene, char **str)
 	ft_lstadd(&(scene->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
 }
 
-double	cone_intersect(t_vector o, t_vector dir, t_object *obj)
+double			cone_intersect(t_vector o, t_vector dir, t_object *obj)
 {
-	double	a;
-	double	b;
-	double	c;
-	double	d;
+	double		a;
+	double		b;
+	double		c;
+	double		d;
 	t_vector	x;
 
 	x = ft_vecsub(o, obj->pos);
@@ -42,16 +54,17 @@ double	cone_intersect(t_vector o, t_vector dir, t_object *obj)
 	a = ft_vecdot(dir, dir) - (1 + obj->r * obj->r) * a * a;
 	b = 2 * (ft_vecdot(dir, x) - (1 + obj->r * obj->r) *
 		ft_vecdot(dir, obj->rot) * ft_vecdot(x, obj->rot));
-	c = ft_vecdot(x, x) - (1 + obj->r * obj->r) * pow(ft_vecdot(x, obj->rot), 2);
+	c = ft_vecdot(x, x) - (1 + obj->r * obj->r) *
+		pow(ft_vecdot(x, obj->rot), 2);
 	d = b * b - 4 * a * c;
 	if (d < EPS)
 		return (-1);
 	return (get_root(a, b, d));
 }
 
-t_vector	cone_normal(t_ray *ray, t_object *obj)
+t_vector		cone_normal(t_ray *ray, t_object *obj)
 {
-	double	m;
+	double		m;
 	t_vector	n;
 	t_vector	p;
 
@@ -65,7 +78,7 @@ t_vector	cone_normal(t_ray *ray, t_object *obj)
 	return (n);
 }
 
-void	cone(t_rtv *rtv, t_ray *ray, int i, t_object *obj)
+void			cone(t_rtv *rtv, t_ray *ray, int i, t_object *obj)
 {
 	obj->t = cone_intersect(ray->orig, ray->dir, obj);
 	obj->rot = ft_vecnorm(obj->rot);

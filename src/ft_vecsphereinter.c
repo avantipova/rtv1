@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_vecsphereinter.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/03 20:21:27 by ldeirdre          #+#    #+#             */
+/*   Updated: 2020/12/03 21:02:34 by ldeirdre         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vector.h"
 #include "rtv_structs.h"
 #include "scene.h"
 
-void	parse_sphere(t_scene *scene, char **str)
+void			parse_sphere(t_scene *scene, char **str)
 {
-	int i;
-	t_object tmp;
+	int			i;
+	t_object	tmp;
 
 	i = -1;
 	tmp.type = SPHERE;
@@ -18,7 +30,7 @@ void	parse_sphere(t_scene *scene, char **str)
 		put_error("Wrong input for sphere");
 	tmp.color.red = (unsigned char)(ft_atoi(str[5]));
 	tmp.color.green = (unsigned char)(ft_atoi(str[6]));
-	tmp.color.blue= (unsigned char)(ft_atoi(str[7]));
+	tmp.color.blue = (unsigned char)(ft_atoi(str[7]));
 	tmp.specular = (double)(ft_atoi(str[8]));
 	while (++i <= 8)
 		free(str[i]);
@@ -26,9 +38,9 @@ void	parse_sphere(t_scene *scene, char **str)
 	ft_lstadd(&(scene->objects), ft_lstnew_node(&tmp, sizeof(t_object)));
 }
 
-t_vector	sphere_normal(t_ray *ray, t_object *obj)
+t_vector		sphere_normal(t_ray *ray, t_object *obj)
 {
-	t_vector n;
+	t_vector	n;
 
 	n = ft_vecsum(ray->orig, ft_vecscale(ray->dir, obj->t));
 	n = ft_vecnorm(ft_vecsub(n, obj->pos));
@@ -37,10 +49,10 @@ t_vector	sphere_normal(t_ray *ray, t_object *obj)
 	return (n);
 }
 
-double	get_root(double a, double b, double d)
+double			get_root(double a, double b, double d)
 {
-	double t1;
-	double t2;
+	double		t1;
+	double		t2;
 
 	t1 = (-b - sqrt(d)) / (2 * a);
 	t2 = (-b + sqrt(d)) / (2 * a);
@@ -51,12 +63,12 @@ double	get_root(double a, double b, double d)
 	return (-1);
 }
 
-double	sphere_intersect(t_vector o, t_vector dir, t_object *obj)
+double			sphere_intersect(t_vector o, t_vector dir, t_object *obj)
 {
-	double	a;
-	double	b;
-	double	c;
-	double	d;
+	double		a;
+	double		b;
+	double		c;
+	double		d;
 	t_vector	oc;
 
 	oc = ft_vecsub(o, obj->pos);
@@ -69,7 +81,7 @@ double	sphere_intersect(t_vector o, t_vector dir, t_object *obj)
 	return (get_root(a, b, d));
 }
 
-void	sphere(t_rtv *rtv, t_ray *ray, int i, t_object *obj)
+void			sphere(t_rtv *rtv, t_ray *ray, int i, t_object *obj)
 {
 	obj->t = sphere_intersect(ray->orig, ray->dir, obj);
 	if (obj->t > 0 && obj->t < rtv->min_t)
