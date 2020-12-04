@@ -6,15 +6,15 @@
 /*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 20:48:50 by ldeirdre          #+#    #+#             */
-/*   Updated: 2020/12/03 20:49:31 by ldeirdre         ###   ########.fr       */
+/*   Updated: 2020/12/04 15:11:27 by ldeirdre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "rtv_structs.h"
-# include "vector.h"
-# include "scene.h"
+#include "rtv_structs.h"
+#include "vector.h"
+#include "scene.h"
 
-t_object	*ft_list_at(t_list_node *begin_list, unsigned int nbr)
+t_object			*ft_list_at(t_list_node *begin_list, unsigned int nbr)
 {
 	unsigned int	i;
 
@@ -29,7 +29,7 @@ t_object	*ft_list_at(t_list_node *begin_list, unsigned int nbr)
 	return (0);
 }
 
-t_light	*ft_list_atlight(t_list_node *begin_list, unsigned int nbr)
+t_light				*ft_list_atlight(t_list_node *begin_list, unsigned int nbr)
 {
 	unsigned int	i;
 

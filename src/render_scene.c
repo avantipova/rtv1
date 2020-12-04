@@ -6,20 +6,20 @@
 /*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 20:22:02 by ldeirdre          #+#    #+#             */
-/*   Updated: 2020/12/03 20:53:33 by ldeirdre         ###   ########.fr       */
+/*   Updated: 2020/12/04 15:18:08 by ldeirdre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "rtv_structs.h"
-# include "vector.h"
-# include "scene.h"
+#include "rtv_structs.h"
+#include "vector.h"
+#include "scene.h"
 
-void	set_color(t_rtv *rtv, int i, int x, int y)
+void			set_color(t_rtv *rtv, int i, int x, int y)
 {
-	double	p;
+	double		p;
 	t_list_node	*cur;
-	t_light *svet;
-	t_object *tmp;
+	t_light		*svet;
+	t_object	*tmp;
 
 	tmp = ft_list_at(rtv->scene->objects.begin, i);
 	cur = rtv->scene->lights.begin;
@@ -35,17 +35,18 @@ void	set_color(t_rtv *rtv, int i, int x, int y)
 		cur = cur->next;
 	}
 	if (i > -1)
-		SDL_SetRenderDrawColor(rtv->rend, tmp->color.red * p, tmp->color.green * p, tmp->color.blue * p, 255);
+		SDL_SetRenderDrawColor(rtv->rend, tmp->color.red * p,
+			tmp->color.green * p, tmp->color.blue * p, 255);
 	else
 		SDL_SetRenderDrawColor(rtv->rend, 0, 0, 0, 255);
 	SDL_RenderDrawPoint(rtv->rend, x, y);
 }
 
-void	intersection_check(t_ray *ray, t_rtv *rtv, int x, int y)
+void			intersection_check(t_ray *ray, t_rtv *rtv, int x, int y)
 {
-	int	i;
+	int			i;
 	t_list_node	*cur;
-	t_object *obj;
+	t_object	*obj;
 
 	i = 0;
 	rtv->clos_obj = -1;
@@ -70,7 +71,7 @@ void	intersection_check(t_ray *ray, t_rtv *rtv, int x, int y)
 	set_color(rtv, rtv->clos_obj, x, y);
 }
 
-void	get_dir(double x, double y, t_ray *ray, t_rtv *rtv)
+void			get_dir(double x, double y, t_ray *ray, t_rtv *rtv)
 {
 	ray->dir.x = x * (VECTOR_W / (double)rtv->width);
 	ray->dir.y = y * (VECTOR_H / (double)rtv->height);
@@ -78,12 +79,12 @@ void	get_dir(double x, double y, t_ray *ray, t_rtv *rtv)
 	ray->dir = ft_vecrot(ray->dir, rtv->scene->cam.rot);
 }
 
-void 		render_scene(t_rtv *rtv, t_ray *ray)
+void			render_scene(t_rtv *rtv, t_ray *ray)
 {
-	int		x;
-	int		y;
-	double	n_x;
-	double	n_y;
+	int			x;
+	int			y;
+	double		n_x;
+	double		n_y;
 
 	x = 0;
 	while (x <= rtv->width)

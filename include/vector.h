@@ -1,14 +1,26 @@
-#ifndef VECTOR_MATH_VECTOR_H
-#define VECTOR_MATH_VECTOR_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/04 15:55:57 by ldeirdre          #+#    #+#             */
+/*   Updated: 2020/12/04 15:56:28 by ldeirdre         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <math.h>
-#include <float.h>
+#ifndef VECTOR_MATH_VECTOR_H
+# define VECTOR_MATH_VECTOR_H
+
+# include <math.h>
+# include <float.h>
 # include <fcntl.h>
 # define DTR(a)	((double)a * (M_PI / 180))
 
 typedef struct	s_vector
 {
-	double 		x;
+	double		x;
 	double		y;
 	double		z;
 }				t_vector;
@@ -29,4 +41,4 @@ t_vector		ft_vecrot(t_vector d, t_vector r);
 t_vector		ft_vecrotx(t_vector d, double a);
 t_vector		ft_vecroty(t_vector d, double a);
 t_vector		ft_vecrotz(t_vector d, double a);
-#endif 
+#endif

@@ -6,42 +6,42 @@
 /*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 20:31:21 by ldeirdre          #+#    #+#             */
-/*   Updated: 2020/12/03 20:49:01 by ldeirdre         ###   ########.fr       */
+/*   Updated: 2020/12/04 15:14:52 by ldeirdre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv_structs.h"
 #include "scene.h"
 
-void	turn_left(t_rtv *rtv, t_ray *ray)
+void				turn_left(t_rtv *rtv, t_ray *ray)
 {
 	rtv->scene->cam.rot.x -= 0.1;
 	render_scene(rtv, ray);
 	SDL_RenderPresent(rtv->rend);
 }
 
-void	turn_right(t_rtv *rtv, t_ray *ray)
+void				turn_right(t_rtv *rtv, t_ray *ray)
 {
 	rtv->scene->cam.rot.x += 0.1;
 	render_scene(rtv, ray);
 	SDL_RenderPresent(rtv->rend);
 }
 
-void	go_up(t_rtv *rtv, t_ray *ray)
+void				go_up(t_rtv *rtv, t_ray *ray)
 {
 	rtv->scene->cam.rot.y += 0.1;
 	render_scene(rtv, ray);
 	SDL_RenderPresent(rtv->rend);
 }
 
-void	go_down(t_rtv *rtv, t_ray *ray)
+void				go_down(t_rtv *rtv, t_ray *ray)
 {
 	rtv->scene->cam.rot.y -= 0.1;
 	render_scene(rtv, ray);
 	SDL_RenderPresent(rtv->rend);
 }
 
-void	run_app(t_rtv *rtv, t_ray *ray)
+void				run_app(t_rtv *rtv, t_ray *ray)
 {
 	int				status;
 	SDL_Event		e;

@@ -6,7 +6,7 @@
 /*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 20:21:53 by ldeirdre          #+#    #+#             */
-/*   Updated: 2020/12/03 21:07:01 by ldeirdre         ###   ########.fr       */
+/*   Updated: 2020/12/04 15:34:48 by ldeirdre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 void			parse_light(t_scene *scene, char **str)
 {
-	int 		i;
-	t_light 	light;
+	int			i;
+	t_light		light;
 
 	i = -1;
 	light.pos.x = (double)(ft_atoi(str[1]));
@@ -33,13 +33,29 @@ void			parse_light(t_scene *scene, char **str)
 	ft_lstadd(&(scene->lights), ft_lstnew_node(&light, sizeof(t_light)));
 }
 
+double			check_object(t_object *obj, t_light *light, t_vector dir)
+{
+	double		t;
+
+	t = 0;
+	if (obj->type == SPHERE)
+		t = sphere_intersect(light->p, dir, obj);
+	else if (obj->type == PLANE)
+		t = plane_intersect(light->p, dir, obj);
+	else if (obj->type == CONE)
+		t = cone_intersect(light->p, dir, obj);
+	else if (obj->type == CYLINDER)
+		t = cylinder_intersect(light->p, dir, obj);
+	return (t);
+}
+
 int				shadow_init(t_light *light, t_rtv *rtv)
 {
 	double		max;
 	double		t;
 	t_vector	dir;
-    t_list_node	*cur;
-	t_object 	*obj;
+	t_list_node	*cur;
+	t_object	*obj;
 
 	t = 0;
 	cur = rtv->scene->objects.begin;
@@ -48,18 +64,11 @@ int				shadow_init(t_light *light, t_rtv *rtv)
 	light->p = ft_vecsum(light->p, ft_vecscale(dir, EPS));
 	while (cur)
 	{
-        obj = cur->content;
-		if (obj->type == SPHERE)
-			t = sphere_intersect(light->p, dir, obj);
-		else if (obj->type == PLANE)
-			t = plane_intersect(light->p, dir, obj);
-		else if (obj->type == CONE)
-			t = cone_intersect(light->p, dir, obj);
-		else if (obj->type == CYLINDER)
-			t = cylinder_intersect(light->p, dir, obj);
+		obj = cur->content;
+		t = check_object(obj, light, dir);
 		if (t > 0.00001 && t < max)
 			return (1);
-        cur = cur->next;
+		cur = cur->next;
 	}
 	return (0);
 }
@@ -95,13 +104,11 @@ void			get_intensity(t_rtv *rtv, t_light *light, t_vector v, double s)
 
 void			light(t_rtv *rtv, t_ray *ray)
 {
-	int			i;
 	t_list_node	*cur;
-	t_light 	*svet;
-	t_object 	*closest;
+	t_light		*svet;
+	t_object	*closest;
 
 	cur = rtv->scene->lights.begin;
-	i = 0;
 	closest = ft_list_at(rtv->scene->objects.begin, rtv->clos_obj);
 	if (rtv->clos_obj > -1)
 	{

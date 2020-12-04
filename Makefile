@@ -6,7 +6,7 @@
 #    By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/28 18:22:57 by ldeirdre          #+#    #+#              #
-#    Updated: 2020/12/03 20:49:48 by ldeirdre         ###   ########.fr        #
+#    Updated: 2020/12/04 19:49:51 by ldeirdre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,10 @@ NAME = rtv1
 LNAM = libft/libft.a
 LSDL = lib_sdl/libSDL2.a
 
-
 LIBFDIR = ./libft/
 LSDLDIR = ./SDL2/
 
 OTHER = ./lib_sdl/
-
 
 INCL = ./include/
 
@@ -51,7 +49,7 @@ $(NAME): $(OBJECTS_DIR) $(OBJ)
 			@$(CC) $(CCFL) -lft -lSDL2 -lm -L$(LIBFDIR) -L$(OTHER) $(OBJ) -framework OpenGL -I $(LIBFDIR) -I $(LSDLDIR) -I $(INCL) -o $(NAME)
 
 $(OBJECTS_DIR)%.o: $(SRCSDIR)%.c $(INCL)/rtv_structs.h
-			$(CC) $(CCFL) -g -c $< -I $(LIBFDIR) -I $(INCL) -I $(LSDLDIR) -o $@
+			$(CC) $(CCFL) -c $< -I $(LIBFDIR) -I $(INCL) -I $(LSDLDIR) -o $@
 
 $(OBJECTS_DIR):
 			@mkdir $(OBJECTS_DIR)
@@ -67,4 +65,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all, clean, fclean, re
-

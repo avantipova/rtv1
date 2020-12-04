@@ -6,14 +6,14 @@
 /*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 20:21:58 by ldeirdre          #+#    #+#             */
-/*   Updated: 2020/12/03 20:31:42 by ldeirdre         ###   ########.fr       */
+/*   Updated: 2020/12/04 15:13:40 by ldeirdre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv_structs.h"
 #include "scene.h"
 
-static void	put_usage(int argc)
+static void		put_usage(int argc)
 {
 	argc = 0;
 	ft_putstr("you should choose file from pics/ folder\n");
@@ -24,10 +24,10 @@ static void	put_usage(int argc)
 	ft_putstr("Have fun! =^.^=\n");
 }
 
-int	main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
-	t_scene			*scene;
-	t_rtv			*rtv;
+	t_scene		*scene;
+	t_rtv		*rtv;
 	t_ray		*ray;
 
 	if (argc == 1)

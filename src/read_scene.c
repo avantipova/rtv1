@@ -1,15 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_scene.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/04 15:15:12 by ldeirdre          #+#    #+#             */
+/*   Updated: 2020/12/04 15:53:50 by ldeirdre         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "scene.h"
 
-void	put_error(char *str)
+void		put_error(char *str)
 {
 	ft_putendl(str);
 	exit(1);
 }
 
-void parse_camera(t_scene *scene, char **str)
+void		parse_camera(t_scene *scene, char **str)
 {
-	int i;
+	int		i;
 
 	i = -1;
 	scene->cam.pos.x = (double)(atoi(str[1]));
@@ -18,15 +29,15 @@ void parse_camera(t_scene *scene, char **str)
 	scene->cam.rot.x = (double)(atoi(str[4]));
 	scene->cam.rot.y = (double)(atoi(str[5]));
 	scene->cam.rot.z = (double)(atoi(str[6]));
-	scene->cams = 1;
+	scene->cams += 1;
 	while (++i <= 6)
 		free(str[i]);
 	free(str);
 }
 
-t_scene	 *parse_args(char **str, t_scene *scene)
+t_scene		*parse_args(char **str, t_scene *scene)
 {
-	int i;
+	int		i;
 
 	i = -1;
 	if (ft_strequ(str[0], "camera:"))
@@ -53,7 +64,7 @@ t_scene	 *parse_args(char **str, t_scene *scene)
 	return (scene);
 }
 
-t_scene	*read_scene(char *argv)
+t_scene		*read_scene(char *argv)
 {
 	t_scene	*res;
 	char	*line;
@@ -62,14 +73,13 @@ t_scene	*read_scene(char *argv)
 	char	**split;
 
 	i = 0;
-	fd = 0;
 	line = NULL;
+	fd = 0;
 	if (!(res = ft_memalloc(sizeof(t_scene))))
 		return (NULL);
 	valid_file(fd, argv, i);
 	if ((fd = open(argv, O_RDONLY)) < 0)
 		put_error("Problem with file opening");
-	res->fname = argv;
 	while ((i = ft_get_next_line(fd, &line)) > 0)
 	{
 		split = ft_strsplit(line, " ");
@@ -77,13 +87,13 @@ t_scene	*read_scene(char *argv)
 		ft_strdel(&line);
 	}
 	ft_strdel(&line);
-	if (res->cams != 1)
+	if (check_cam(res, argv))
 		put_error("No camera");
 	close(fd);
 	return (res);
 }
 
-void	free_scene(t_scene *scene)
+void		free_scene(t_scene *scene)
 {
 	free(scene);
 }
