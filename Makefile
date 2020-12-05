@@ -6,11 +6,11 @@
 #    By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/28 18:22:57 by ldeirdre          #+#    #+#              #
-#    Updated: 2020/12/04 19:49:51 by ldeirdre         ###   ########.fr        #
+#    Updated: 2020/12/05 17:17:10 by ldeirdre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = rtv1
+NAME = RTv1
 
 LNAM = libft/libft.a
 LSDL = lib_sdl/libSDL2.a

@@ -6,7 +6,7 @@
 /*   By: ldeirdre <ldeirdre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 15:15:12 by ldeirdre          #+#    #+#             */
-/*   Updated: 2020/12/04 15:53:50 by ldeirdre         ###   ########.fr       */
+/*   Updated: 2020/12/05 17:15:41 by ldeirdre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_scene		*read_scene(char *argv)
 	}
 	ft_strdel(&line);
 	if (check_cam(res, argv))
-		put_error("No camera");
+		put_error("Something's missing");
 	close(fd);
 	return (res);
 }
